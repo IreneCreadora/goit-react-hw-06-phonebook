@@ -1,5 +1,7 @@
 import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice';
+import { addContact } from '../../redux/contacts/contactsSlice';
+import { useSelector } from 'react-redux';
+import { getContacts } from 'redux/selectors';
 
 import { Formik } from 'formik';
 import { FormStyled, Label, Input, Button } from '../Component.styled';
@@ -15,13 +17,24 @@ import { validationSchema } from './yup-validation';
 
 const ContactForm = () => {
   const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
 
   const handleSubmit = (values, { resetForm }) => {
     const isSuccessSubmit = values;
     if (!isSuccessSubmit) return;
+
+    const isInContact = contacts.find(
+      contact => contact.name.toLowerCase() === values.name.toLowerCase()
+    );
+    if (isInContact) {
+      alert(`${values.name} is already in contact`);
+      return false;
+    }
+
     dispatch(addContact(values));
     resetForm();
   };
+
   return (
     <Formik
       initialValues={initialValues}

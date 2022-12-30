@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { deleteContact } from '../../redux/contactsSlice';
+import { deleteContact } from '../../redux/contacts/contactsSlice';
 
 import propTypes from 'prop-types';
 import {
@@ -46,7 +46,6 @@ ContactItem.propTypes = {
     relation: propTypes.string.isRequired,
     importantContact: propTypes.bool.isRequired,
   }),
-  // onDelete: propTypes.func.isRequired,
 };
 
 export default ContactItem;

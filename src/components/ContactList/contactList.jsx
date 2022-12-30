@@ -1,11 +1,24 @@
-import propTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { getContacts, getFilter } from 'redux/selectors';
 import ContactItem from './contactItem';
 import { ContactListStyled } from '../Component.styled';
 
-const ContactList = ({ filteredContacts }) => {
+const ContactList = () => {
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+
+  const filterAvailableContacts = () => {
+    const normalizeFilter = filter.value.trim().toLowerCase();
+
+    return contacts.filter(contact =>
+      contact.name.trim().toLowerCase().includes(normalizeFilter)
+    );
+  };
+
+  const availableContacts = filterAvailableContacts();
   return (
     <ContactListStyled>
-      {filteredContacts.map(
+      {availableContacts.map(
         ({
           id,
           name,
@@ -27,24 +40,12 @@ const ContactList = ({ filteredContacts }) => {
                 relation,
               }}
               key={id}
-              // onDelete={onDelete}
             />
           );
         }
       )}
     </ContactListStyled>
   );
-};
-
-ContactList.propTypes = {
-  filteredContacts: propTypes.arrayOf(
-    propTypes.shape({
-      id: propTypes.string.isRequired,
-      name: propTypes.string.isRequired,
-      number: propTypes.string.isRequired,
-    })
-  ),
-  // onDelete: propTypes.func.isRequired,
 };
 
 export default ContactList;
