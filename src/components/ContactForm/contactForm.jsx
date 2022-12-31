@@ -20,12 +20,12 @@ const ContactForm = () => {
   const contacts = useSelector(getContacts);
 
   const handleSubmit = (values, { resetForm }) => {
-    const isSuccessSubmit = values;
-    if (!isSuccessSubmit) return;
+    if (!values) return;
 
     const isInContact = contacts.find(
       contact => contact.name.toLowerCase() === values.name.toLowerCase()
     );
+
     if (isInContact) {
       alert(`${values.name} is already in contact`);
       return false;
